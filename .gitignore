@@ -1,3 +1,7 @@
+runs
+universal_landmark_detection/.eval
+data
+.idea
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
