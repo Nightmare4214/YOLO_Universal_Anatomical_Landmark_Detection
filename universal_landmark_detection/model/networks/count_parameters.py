@@ -1,9 +1,10 @@
-from unet2d import UNet as unet2d
-from u2net import U2Net as u2net
-from tri_unet import Tri_UNet as tri_unet
 from gln import GLN
 from gln2 import GLN2
 from globalNet import GlobalNet
+from tri_unet import Tri_UNet as tri_unet
+from u2net import U2Net as u2net
+from unet2d import UNet as unet2d
+
 
 # 网络参数数量
 
@@ -15,8 +16,8 @@ def get_parameter_number(net):
 
 
 if __name__ == "__main__":
-    in_channels = [1, 1, 1,1]
-    out_channels = [37, 19, 85,6]
+    in_channels = [1, 1, 1, 1]
+    out_channels = [37, 19, 85, 6]
     globalNet_params = {'scale_factor': 0.25,
                         'kernel_size': 3,
                         'dilations': [1, 2, 5, 2, 1]
@@ -36,5 +37,6 @@ if __name__ == "__main__":
         GLN2(u2net, localNet_params, globalNet_params)))
     # model = GTN(u2net, localNet_params, gtn_params)
     import torch
-    img = torch.zeros((4,1,512,512))
+
+    img = torch.zeros((4, 1, 512, 512))
     # model(img)

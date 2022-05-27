@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from skimage import measure, morphology
 import numpy as np
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from skimage import measure
 
 
 def plot_surface(filename, image, threshold=None, fill=False):
-
     # Position the scan upright,
     # so the head of the patient would be at the top facing the camera
     verts, faces, _, x = measure.marching_cubes_lewiner(
@@ -68,18 +67,18 @@ def visualMultiChannel(img, col_num=5):
         ret: numpy.ndarray, imageShape
     '''
     c, n1, n2 = img.shape
-    row_num = (c+col_num-1)//col_num
+    row_num = (c + col_num - 1) // col_num
     padding = 10
-    N1 = n1*row_num+(row_num+1)*padding
-    N2 = n2*col_num+(col_num+1)*padding
+    N1 = n1 * row_num + (row_num + 1) * padding
+    N2 = n2 * col_num + (col_num + 1) * padding
     out = np.zeros((N1, N2), dtype=np.float)
     beg1 = padding
     for i in range(row_num):
         beg2 = padding
         for j in range(col_num):
-            k = i*col_num+j
+            k = i * col_num + j
             if k < c:
-                out[beg1:beg1+n1, beg2:beg2+n2] = img[k]
-            beg2 += padding+n2
-        beg1 += padding+n1
+                out[beg1:beg1 + n1, beg2:beg2 + n2] = img[k]
+            beg2 += padding + n2
+        beg1 += padding + n1
     return out

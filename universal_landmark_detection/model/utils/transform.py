@@ -6,6 +6,7 @@ def rotate(angle):
     '''
         angle: °
     '''
+
     def func(img):
         ''' img: ndarray, channel x imgsize
         '''
@@ -13,6 +14,7 @@ def rotate(angle):
         for i in range(img.shape[0]):
             ret.append(sktrans.rotate(img[i], angle))
         return np.array(ret)
+
     return func
 
 
@@ -28,13 +30,14 @@ def translate(offsets):
         '''
         ret = []
         size = img.shape[1:]
-        old_sls = tuple(slice(0, j-i) for i, j in zip(offsets, size))
+        old_sls = tuple(slice(0, j - i) for i, j in zip(offsets, size))
 
         for old in img:
             new = np.zeros(size)
             new[new_sls] = old[old_sls]
             ret.append(new)
         return np.array(ret)
+
     return func
 
 
@@ -50,11 +53,12 @@ def flip(axis=1):
         dim = img.ndim
         cur_axis = axis % dim
         if cur_axis == 0:
-            all_sls = tuple([f_sls])*dim
+            all_sls = tuple([f_sls]) * dim
         else:
             all_sls = tuple(
-                            f_sls if i == cur_axis else sls for i in range(dim))
+                f_sls if i == cur_axis else sls for i in range(dim))
             return img[all_sls]
+
     return func
 
 
@@ -80,4 +84,5 @@ def transformer(param_dic):
             # copy is necessary, torch needs ascontiguousarray
             ret.append(cur_img.copy())
         return tuple(ret)
+
     return trans

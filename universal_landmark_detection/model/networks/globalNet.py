@@ -6,7 +6,7 @@ import torch.nn.functional as F
 class myConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=1):
         super(myConv2d, self).__init__()
-        padding = (kernel_size-1)//2
+        padding = (kernel_size - 1) // 2
         self.conv = nn.Conv2d(in_channels, out_channels,
                               kernel_size=kernel_size, padding=padding)
 
@@ -21,7 +21,7 @@ class dilatedConv(nn.Module):
         super(dilatedConv, self).__init__()
         # f = (kernel_size-1) * d +1
         # new_width = (width - f + 2 * padding)/stride + stride
-        padding = (kernel_size-1) * dilation // 2
+        padding = (kernel_size - 1) * dilation // 2
         self.conv = nn.Conv2d(in_channels, out_channels,
                               kernel_size, dilation=dilation, padding=padding)
         self.bn = nn.BatchNorm2d(out_channels)

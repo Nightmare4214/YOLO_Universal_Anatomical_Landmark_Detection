@@ -1,7 +1,8 @@
 import numpy as np
-from skimage.measure import compare_psnr as PSNR
-from skimage.measure import compare_ssim as SSIM
-from skimage.measure import compare_mse as MSE
+from skimage.metrics import mean_squared_error as MSE
+from skimage.metrics import peak_signal_noise_ratio as PSNR
+from skimage.metrics import structural_similarity as SSIM
+
 from .kit import norm, getPointsFromHeatmap
 
 
@@ -61,7 +62,7 @@ def cal_mre(x, y):
     p1 = getPointsFromHeatmap(x)
     p2 = getPointsFromHeatmap(y)
 
-    li = [sum((i-j)**2 for i, j in zip(point, gt_point)) **
+    li = [sum((i - j) ** 2 for i, j in zip(point, gt_point)) **
           0.5 for point, gt_point in zip(p1, p2)]
     return np.mean(li)
 
@@ -76,6 +77,6 @@ def cal_std(x, y):
     p1 = getPointsFromHeatmap(x)
     p2 = getPointsFromHeatmap(y)
 
-    li = [sum((i-j)**2 for i, j in zip(point, gt_point)) **
+    li = [sum((i - j) ** 2 for i, j in zip(point, gt_point)) **
           0.5 for point, gt_point in zip(p1, p2)]
     return np.std(li)

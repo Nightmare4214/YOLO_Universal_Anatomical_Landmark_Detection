@@ -1,15 +1,17 @@
-from .loss_and_optim import *
 from .gln import GLN
 from .gln2 import GLN2
-from .u2net import U2Net
-from .tri_unet import Tri_UNet
-from .unet2d import UNet as unet2d
 from .globalNet import GlobalNet
+from .loss_and_optim import *
+from .tri_unet import Tri_UNet
+from .u2net import U2Net
+from .unet2d import UNet as unet2d
+from .csnet import CsNet
 
 
 def get_net(s):
     return {
         'unet2d': unet2d,
+        'csnet': CsNet,
         'u2net': U2Net,
         'gln': GLN,
         'gln2': GLN2,

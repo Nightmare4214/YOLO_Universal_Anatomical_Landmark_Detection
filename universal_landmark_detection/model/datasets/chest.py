@@ -11,7 +11,8 @@ from ..utils import gaussianHeatmap, transformer
 
 class Chest(data.Dataset):
 
-    def __init__(self, prefix, phase, transform_params=dict(), sigma=5, num_landmark=6, size=[512, 512], use_abnormal=True, chest_set=None, exclude_list=None,use_background_channel=False):
+    def __init__(self, prefix, phase, transform_params=dict(), sigma=5, num_landmark=6, size=[512, 512],
+                 use_abnormal=True, chest_set=None, exclude_list=None, use_background_channel=False):
 
         self.transform = transformer(transform_params)
         self.size = tuple(size)
@@ -50,14 +51,14 @@ class Chest(data.Dataset):
         ret = {'name': name}
 
         img, origin_size = self.readImage(
-            os.path.join(self.pth_Image, name+'.png'))
+            os.path.join(self.pth_Image, name + '.png'))
 
         points = self.readLandmark(name, origin_size)
         li = [self.genHeatmap(point, self.size) for point in points]
         if self.use_background_channel:
             sm = sum(li)
-            sm[sm>1]=1
-            li.append(1-sm)
+            sm[sm > 1] = 1
+            li.append(1 - sm)
         gt = np.array(li)
         img, gt = self.transform(img, gt)
         ret['input'] = torch.FloatTensor(img)
@@ -68,13 +69,13 @@ class Chest(data.Dataset):
         return len(self.indexes)
 
     def readLandmark(self, name, origin_size):
-        path = os.path.join(self.pth_Label, name+'.txt')
+        path = os.path.join(self.pth_Label, name + '.txt')
         points = []
         with open(path, 'r') as f:
             n = int(f.readline())
             for i in range(n):
                 ratios = [float(i) for i in f.readline().split()]
-                pt = tuple([round(r*sz) for r, sz in zip(ratios, self.size)])
+                pt = tuple([round(r * sz) for r, sz in zip(ratios, self.size)])
                 points.append(pt)
         return points
 
@@ -93,5 +94,5 @@ class Chest(data.Dataset):
         arr = np.expand_dims(np.transpose(arr, (1, 0)), 0).astype(np.float)
         # conveting to float is important, otherwise big bug occurs
         for i in range(arr.shape[0]):
-            arr[i] = (arr[i]-arr[i].mean())/(arr[i].std()+1e-20)
+            arr[i] = (arr[i] - arr[i].mean()) / (arr[i].std() + 1e-20)
         return arr, origin_size

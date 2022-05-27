@@ -1,16 +1,17 @@
 import os
-from PIL import Image
 
 import numpy as np
 import torch
 import torch.utils.data as data
+from PIL import Image
 
 from ..utils import gaussianHeatmap, transformer
 
 
 class Cephalometric(data.Dataset):
 
-    def __init__(self, prefix, phase, transform_params=dict(), sigma=10, num_landmark=19, size=[640, 800], use_background_channel=False):
+    def __init__(self, prefix, phase, transform_params=dict(), sigma=10, num_landmark=19, size=[640, 800],
+                 use_background_channel=False):
 
         self.transform = transformer(transform_params)
         self.size = tuple(size)
@@ -45,7 +46,7 @@ class Cephalometric(data.Dataset):
         ret = {'name': name}
 
         img, origin_size = self.readImage(
-            os.path.join(self.pth_Image, name+'.bmp'))
+            os.path.join(self.pth_Image, name + '.bmp'))
 
         # # todo
         # name='001'
@@ -55,7 +56,7 @@ class Cephalometric(data.Dataset):
         if self.use_background_channel:
             sm = sum(li)
             sm[sm > 1] = 1
-            li.append(1-sm)
+            li.append(1 - sm)
         gt = np.array(li)
         # gt = np.array([self.genHeatmap(point, self.size) for point in points])
         img, gt = self.transform(img, gt)
@@ -68,19 +69,19 @@ class Cephalometric(data.Dataset):
 
     def readLandmark(self, name, origin_size):
         points = []
-        with open(os.path.join(self.pth_label_junior, name+'.txt')) as f1:
-            with open(os.path.join(self.pth_label_senior, name+'.txt')) as f2:
+        with open(os.path.join(self.pth_label_junior, name + '.txt')) as f1:
+            with open(os.path.join(self.pth_label_senior, name + '.txt')) as f2:
                 for i in range(self.num_landmark):
                     landmark1 = f1.readline().rstrip('\n').split(',')
                     landmark2 = f2.readline().rstrip('\n').split(',')
-                    landmark = [(float(i)+float(j))/2 for i,
-                                j in zip(landmark1, landmark2)]
+                    landmark = [(float(i) + float(j)) / 2 for i,
+                                                              j in zip(landmark1, landmark2)]
                     # todo
                     # if landmark[0]>origin_size[0] or landmark[1]>origin_size[1]:
                     #    landmark=[0,0]
 
-                    points.append(tuple(round(p*new/old) for p, new,
-                                        old in zip(landmark, self.size, origin_size)))
+                    points.append(tuple(round(p * new / old) for p, new,
+                                                                 old in zip(landmark, self.size, origin_size)))
         return points
 
     def readImage(self, path):
@@ -99,5 +100,5 @@ class Cephalometric(data.Dataset):
         arr = np.expand_dims(np.transpose(arr, (1, 0)), 0).astype(np.float)
         # conveting to float is important, otherwise big bug occurs
         for i in range(arr.shape[0]):
-            arr[i] = (arr[i]-arr[i].mean())/(arr[i].std()+1e-20)
+            arr[i] = (arr[i] - arr[i].mean()) / (arr[i].std() + 1e-20)
         return arr, origin_size

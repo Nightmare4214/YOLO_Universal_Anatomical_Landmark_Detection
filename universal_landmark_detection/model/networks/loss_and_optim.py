@@ -5,7 +5,6 @@ l1 = torch.nn.L1Loss
 l2 = torch.nn.MSELoss
 bce = torch.nn.BCELoss
 
-
 # optimizer
 adam = torch.optim.Adam
 sgd = torch.optim.SGD

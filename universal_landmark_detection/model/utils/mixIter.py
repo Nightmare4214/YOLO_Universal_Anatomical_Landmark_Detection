@@ -7,7 +7,7 @@ class MixIter:
             raise Exception("Empty iter list")
         self.acc_length = [len(iter_list[0])]
         for i in iter_list[1:]:
-            self.acc_length.append(len(i)+self.acc_length[-1])
+            self.acc_length.append(len(i) + self.acc_length[-1])
         self.total_num = self.acc_length[-1]
         self.iter_list = iter_list
         self.mix_step = mix_step
@@ -16,23 +16,22 @@ class MixIter:
         self.nums = []
         last = 1
         for n in self.acc_length:
-            segs = self.get_segs(list(range(last, 1+n)))
-            self.nums+=segs
-            last = n+1
+            segs = self.get_segs(list(range(last, 1 + n)))
+            self.nums += segs
+            last = n + 1
         random.shuffle(self.nums)
         self.nums = [i for sub_li in self.nums for i in sub_li]
 
     def get_segs(self, nums):
         li = []
         n = len(nums)
-        i, end = 0, n-self.mix_step
+        i, end = 0, n - self.mix_step
         while i < end:
-            li.append(nums[i:i+self.mix_step])
+            li.append(nums[i:i + self.mix_step])
             i += self.mix_step
         else:
             li.append(nums[i:])
         return li
-
 
     def findUpper(self, num):
         for i, acc in enumerate(self.acc_length):

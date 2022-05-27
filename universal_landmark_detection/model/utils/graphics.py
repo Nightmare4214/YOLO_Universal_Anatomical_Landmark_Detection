@@ -1,10 +1,9 @@
 import heapq
 from collections import Iterable
-from itertools import product
 
 
 def dis2(p, q):
-    return sum((i-j)**2 for i, j in zip(p, q))
+    return sum((i - j) ** 2 for i, j in zip(p, q))
 
 
 def planePointDistance(plane, point):
@@ -15,9 +14,9 @@ def planePointDistance(plane, point):
         offset: number
     '''
     normal, offset = plane
-    t = sum(i*j for i, j in zip(normal, point))+offset
-    s = sum(i*i for i in normal)
-    return abs(t)/(s**0.5)
+    t = sum(i * j for i, j in zip(normal, point)) + offset
+    s = sum(i * i for i in normal)
+    return abs(t) / (s ** 0.5)
 
 
 def globe(boundary, seeds, distance, max_distance=36, check=lambda x: True):

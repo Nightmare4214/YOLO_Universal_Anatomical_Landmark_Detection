@@ -73,7 +73,7 @@ def get_config(config_file, config_names=[]):
     '''
 
     with open(config_file) as f:
-        config = resolve_expression(yaml.load(f,Loader=yaml.FullLoader))
+        config = resolve_expression(yaml.load(f, Loader=yaml.FullLoader))
 
     if type(config_names) == str:
         return getEasyDict(config[config_names])

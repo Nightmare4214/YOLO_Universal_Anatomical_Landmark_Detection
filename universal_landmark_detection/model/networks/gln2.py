@@ -1,4 +1,3 @@
-from PIL import Image
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -7,7 +6,7 @@ import torch.nn.functional as F
 class myConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=1):
         super(myConv2d, self).__init__()
-        padding = (kernel_size-1)//2
+        padding = (kernel_size - 1) // 2
         self.conv = nn.Conv2d(in_channels, out_channels,
                               kernel_size=kernel_size, padding=padding)
 
@@ -22,7 +21,7 @@ class dilatedConv(nn.Module):
         super(dilatedConv, self).__init__()
         # f = (kernel_size-1) * d +1
         # new_width = (width - f + 2 * padding)/stride + stride
-        padding = (kernel_size-1) * dilation // 2
+        padding = (kernel_size - 1) * dilation // 2
         self.conv = nn.Conv2d(in_channels, out_channels,
                               kernel_size, dilation=dilation, padding=padding)
         self.bn = nn.BatchNorm2d(out_channels)
@@ -45,7 +44,7 @@ class globalNet(nn.Module):
             dilations = [1, 2, 5]
         for i, (in_chan, out_chan) in enumerate(zip(in_channels, out_channels)):
             setattr(self, 'in{i}'.format(i=i),
-                    myConv2d(in_chan+out_chan, mid_channels, 1))
+                    myConv2d(in_chan + out_chan, mid_channels, 1))
         for i, n_chan in enumerate(out_channels):
             setattr(self, 'out{i}'.format(i=i),
                     myConv2d(mid_channels, n_chan, 1))
@@ -81,4 +80,4 @@ class GLN2(nn.Module):
         local_feature = self.localNet(x, task_idx)['output']
         fuse = torch.cat((x, local_feature), dim=1)
         global_feature = self.globalNet(fuse, task_idx)['output']
-        return {'output': global_feature*local_feature}
+        return {'output': global_feature * local_feature}
