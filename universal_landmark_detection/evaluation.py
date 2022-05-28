@@ -149,7 +149,7 @@ def evaluate(input_path, output_path, save_img=True, assigned=False, IS_DRAW_TEX
             elif dataset == 'hand':
                 img_path = os.path.join(image_path_pre, name + '.jpg')
             else:
-                img_path = os.path.join(image_path_pre, name + '.jpg')
+                img_path = os.path.join(image_path_pre, name + '.png')
             img = Image.open(img_path)
             img = img.resize(img_size)
             img = np.array(img)

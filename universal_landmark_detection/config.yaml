@@ -8,7 +8,7 @@ seed: 42  # random seed
 # training displaying
 display_freq: 2 # display image
 eval_freq: 2  # after eval_freq epoch, validate data
-save_freq: 0 # if savestep==0, don't save
+save_freq: 5 # if savestep==0, don't save
 
 # changes path when swithes betwen train and test
 checkpoint: ''
