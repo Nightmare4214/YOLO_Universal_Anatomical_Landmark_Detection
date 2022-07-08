@@ -89,6 +89,36 @@ def gaussianHeatmap(sigma, dim: int = 2, nsigma: int = 3):
     return genHeatmap
 
 
+def laplaceHeatmap(sigma, dim: int = 2, nsigma: int = 3):
+    if nsigma <= 2:
+        print('[Warning]: nsigma={} is recommended to be greater than 2'.format(nsigma))
+    radius = round(nsigma * sigma)
+    center = tuple([radius for i in range(dim)])
+    mask_shape = tuple([2 * radius for i in range(dim)])
+    mask = np.zeros(mask_shape, dtype=np.float)
+    sig2 = sigma ** 2
+    coef = 2*sigma
+    for p in product(*[range(i) for i in mask_shape]):
+        d2 = sum(abs(i - j) for i, j in zip(center, p))
+        mask[p] = np.exp(-d2 / sig2 / 2) / coef
+    mask = (mask - mask.min()) / (
+                mask.max() - mask.min())  # necessary?, yes, the output heatmap is processed with sigmoid
+
+    def genHeatmap(point, shape):
+        ret = np.zeros(shape, dtype=np.float)
+        bboxs = [(max(0, point[ax] - radius), min(shape[ax], point[ax] + radius))
+                 for ax in range(dim)]
+        img_sls = tuple([slice(i, j) for i, j in bboxs])
+        mask_begins = [max(0, radius - point[ax]) for ax in range(dim)]
+        mask_sls = tuple([slice(beg, beg + j - i)
+                          for beg, (i, j) in zip(mask_begins, bboxs)])
+        ret[img_sls] = mask[mask_sls]
+        return ret
+
+    return genHeatmap
+
+
+
 def unravel_index(index, shape):
     out = []
     for dim in reversed(shape):
