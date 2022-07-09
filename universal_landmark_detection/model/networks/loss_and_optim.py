@@ -1,9 +1,11 @@
 import torch
+from AC_loss import AC_loss
 
 # loss
 l1 = torch.nn.L1Loss
 l2 = torch.nn.MSELoss
 bce = torch.nn.BCELoss
+ac_loss = AC_loss
 
 # optimizer
 adam = torch.optim.Adam

@@ -24,7 +24,8 @@ def get_loss(s):
     return {
         'l1': l1,
         'l2': l2,
-        'bce': bce
+        'bce': bce,
+        'ac_loss': AC_loss
     }[s.lower()]
 
 
