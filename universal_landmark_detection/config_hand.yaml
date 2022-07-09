@@ -110,6 +110,8 @@ learning:
         reduction: 'sum'
     bce:
         reduction: 'sum'
+    ac_loss:
+        reduction: 'mean'
     optim: 'adam'
     adam: 
         lr: 0.0001

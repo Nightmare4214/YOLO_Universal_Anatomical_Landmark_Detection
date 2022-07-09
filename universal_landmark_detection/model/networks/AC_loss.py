@@ -6,9 +6,10 @@ from torch import nn
 
 class AC_loss(nn.Module):
 
-    def __init__(self) -> None:
+    def __init__(self, reduction='mean') -> None:
         super().__init__()
         self.mse = nn.MSELoss()
+        self.reduction = reduction
 
     def unravel_index(self, index, shape):
         out = []
@@ -46,7 +47,9 @@ class AC_loss(nn.Module):
             w_ac = torch.log2(self.mse(predict_D, gt_D)) + torch.log2(self.mse(predict_A, gt_A))
             l2 = self.mse(predict[b], gt[b])
             loss += w_ac * l2
-        return loss / B
+        if self.reduction == 'mean':
+            return loss / B
+        return loss
 
 
 if __name__ == '__main__':

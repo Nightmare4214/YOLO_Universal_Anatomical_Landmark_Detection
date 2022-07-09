@@ -1,7 +1,8 @@
 import torch
-from AC_loss import AC_loss
+from universal_landmark_detection.model.networks.AC_loss import AC_loss
 
 # loss
+
 l1 = torch.nn.L1Loss
 l2 = torch.nn.MSELoss
 bce = torch.nn.BCELoss
