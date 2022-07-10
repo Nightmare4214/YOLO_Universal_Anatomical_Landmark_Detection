@@ -1,5 +1,5 @@
 import torch
-from universal_landmark_detection.model.networks.AC_loss import AC_loss
+from .AC_loss import AC_loss
 
 # loss
 
