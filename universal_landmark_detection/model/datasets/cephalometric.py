@@ -5,7 +5,7 @@ import torch
 import torch.utils.data as data
 from PIL import Image
 
-from ..utils import gaussianHeatmap, transformer
+from ..utils import laplaceHeatmap, gaussianHeatmap, transformer
 
 
 class Cephalometric(data.Dataset):
@@ -33,6 +33,7 @@ class Cephalometric(data.Dataset):
             self.indexes = files[150:400]
         else:
             raise Exception("Unknown phase: {phase}".fomrat(phase=phase))
+        # self.genHeatmap = laplaceHeatmap(6, dim=len(size))
         self.genHeatmap = gaussianHeatmap(sigma, dim=len(size))
 
         # # todo
